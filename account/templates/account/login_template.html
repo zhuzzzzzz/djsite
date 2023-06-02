@@ -1,0 +1,58 @@
+{% extends "account/base.html" %}
+
+{# base.html用到的模板变量，需要由所有视图的上下文字典提供 #}
+{# log_state: 用户登录状态 #}
+{# log_user: 登录的用户名称 #}
+{# login_template.html用到的模板变量，需要由当前视图的上下文字典提供 #}
+{# logging_user: 正在登录的用户名称,用于密码验证失败时自动填充用户名字段 #}
+
+{% block title %}登录{% endblock %}
+
+{% block extraCss %}
+<style>
+        .container{
+            border: 1px solid black;
+            width: 400px;
+            margin-top: 100px;
+            padding: 20px;
+        }
+        .prompt{
+            color: red;
+        }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method='post'>
+        <div class="form-group form-group-lg">
+            <label for="id_username">账号</label>
+            {% if logging_user %}
+            <input type="text" class="form-control" maxlength="20" id="id_username" placeholder="用户名" name="username"
+                   required="required" value="{{logging_user}}">
+            {% else %}
+            <input type="text" class="form-control" maxlength="20" id="id_username" placeholder="用户名" name="username"
+                   required="required">
+            {% endif %}
+        </div>
+        <div class="form-group form-group-lg">
+            <label for="id_password">密码</label>
+            <input type="password" class="form-control" id="id_password" placeholder="密码" name="password"
+                   required="required">
+        </div>
+        <!--        <div class="checkbox">-->
+        <!--            <label>-->
+        <!--                <input type="checkbox"> Check me out-->
+        <!--            </label>-->
+        <!--        </div>-->
+        <div class="prompt">
+            {{prompt}}
+        </div>
+        <button type="submit" class="btn btn-default btn-lg">登录</button>
+        <a style="float: right" class="btn btn-default btn-lg" href="{% url 'account:register'%}" role="button">注册</a>
+        {% csrf_token %}
+    </form>
+</div>
+{% endblock %}
+
+
